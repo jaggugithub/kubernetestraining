@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2022-02-06T14:45:32Z"
+  labels:
+    run: samplepod
+  name: samplepod
+  namespace: default
+  resourceVersion: "64114"
+  uid: 4e481262-52f9-4889-88cb-9fbe5d31dcd0
+spec:
+  containers:
+  - image: wordpress
+    imagePullPolicy: Always
+    name: samplepod
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-9ndpv
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: k8sworker1
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: kube-api-access-9ndpv
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2022-02-06T14:45:32Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2022-02-06T14:45:48Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2022-02-06T14:45:48Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2022-02-06T14:45:32Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://243442f425090b9bd14d408d57b6a0da3fee646eec7529b2d138de91f882eec3
+    image: wordpress:latest
+    imageID: docker-pullable://wordpress@sha256:3e28e1e0b732e1828028d7d500eb73f273fc8365215f633414e60cdc631e0d91
+    lastState: {}
+    name: samplepod
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2022-02-06T14:45:48Z"
+  hostIP: 10.154.0.4
+  phase: Running
+  podIP: 10.244.1.25
+  podIPs:
+  - ip: 10.244.1.25
+  qosClass: BestEffort
+  startTime: "2022-02-06T14:45:32Z"
